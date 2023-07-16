@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // runs a taks for 1sec
+      const LongTask = () => {
+        var ts = Date.now();
+        var tsend = Date.now() + 1000;
+        while (ts < tsend) {
+          ts = Date.now();
+        }
+      };
+      // once the page as loaded
+      window.addEventListener("load", () => {
+        const slowclick = document.getElementById("slowclick");
+        const slowresult = document.getElementById("slowresult");
+
+        const fastclick = document.getElementById("fastclick");
+        const fastresult = document.getElementById("fastresult");
+
+        slowclick.addEventListener("click", () => {
+          console.log("long task started");
+          LongTask();
+        });
+
+        slowclick.addEventListener("click", () => {
+          console.log("update message");
+          slowresult.innerHTML = "Important update message";
+        });
+
+        fastclick.addEventListener("click", () => {
+          setTimeout(() => {
+            console.log("fast task started");
+            LongTask();
+          });
+        });
+
+        fastclick.addEventListener("click", () => {
+          console.log("update message");
+
+          fastresult.innerHTML = "Important update message";
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>BAD INP Score caused by multiple event listeners</h1>
+    <p>On this page there are 2 event listeners listening to #click.</p>
+    <p>
+      The first event listener is slow and unimportant, the second one a fast
+      and important
+    </p>
+    <p>
+      When clicking the button the first and slow event lister will fire first
+      and the second wil have to wait
+    </p>
+    <p>This will cause an INP score of at least 1000ms</p>
+
+    <h2>try it yourself</h2>
+    <button id="slowclick">slowclick</button>
+    <div id="slowresult">...</div>
+
+    <h2>A faster alternative</h2>
+    <p>The faster way to do this is by wrapping your slow function in a 0ms timeout. This will yield to the main thread before executing this function. The 2esonc, important function does not yield to the main thread and is executed immediately</p>
+    <button id="fastclick">fastclick</button>
+    <div id="fastresult">...</div>
+  </body>
+</html>
