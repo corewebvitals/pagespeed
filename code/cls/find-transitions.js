@@ -52,9 +52,10 @@
     // Get the computed style
     let cs = window.getComputedStyle(node);
     let tp = cs['transition-property'];
+    let td = cs['transition-duration'];
 
     // If there is a transition, add it to the table
-    if (tp !== '' && tp !== 'none') {
+    if (tp !== '' && tp !== 'none' && td != '0s') {
       nodeTable.push({ selector: getSelector(node), transition: cs['transition'] });
       nodeArray.push(node);
     }
