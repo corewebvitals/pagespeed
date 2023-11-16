@@ -65,25 +65,22 @@
     }
   }
 
-  // Start the function
+  // find all transitions
   getNodesWithTransition(document.body);
 
   // Display the results in the console
   console.log('%cReadable table of selectors and their transitions', 'color: red; font-weight: bold;');
   console.table(nodeTable);
 
-
   console.log('%cNodeList for you to inspect (harder to read but more info)', 'color: red; font-weight: bold;');
-
   console.log(nodeArray);
 
 
-  //join all selectors by a comman
+  // styles to temporarity override the transitions
   let selectors = nodeTable.map((item) => item.selector).join(', ');
 
   console.log('%cSpecific CSS to disable all transitions on this page', 'color: red; font-weight: bold;');
   console.log(`<style>${selectors}:transition-property: none !important;</style>`);
-
   
   console.log('%cGlobal CSS to disable all transitions on this page (not suggested on production)', 'color: red; font-weight: bold;');
   console.log(`<style>*:transition-property: none !important;</style>`);
