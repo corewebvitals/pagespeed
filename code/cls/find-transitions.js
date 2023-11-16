@@ -81,9 +81,9 @@
   let selectors = nodeTable.map((item) => item.selector).join(', ');
 
   console.log('%cSpecific CSS to disable all transitions on this page', 'color: red; font-weight: bold;');
-  console.log(`<style>${selectors}:transition-property: none !important;</style>`);
+  console.log(`<style>${selectors}{transition-property: none !important;}</style>`);
   
   console.log('%cGlobal CSS to disable all transitions on this page (not suggested on production)', 'color: red; font-weight: bold;');
-  console.log(`<style>*:transition-property: none !important;</style>`);
+  console.log(`<style>*{transition-property: none !important;}</style>`);
 
 })()
