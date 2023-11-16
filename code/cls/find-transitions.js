@@ -1,3 +1,12 @@
+/**
+ * This snippet will output all the elements that have a CSS transition on them.
+ * 
+ * To test for a transition, we check the computed style of the element and see if it has a transition property.
+ * 
+ * To test if the layout-shift is caused by a transition you could temporarily disable transitions by copying the CSS outputted in the console.
+ * The use a RUM tool like Core/Dash (https://coredash.app) to see if the page layout shift is affected.
+ */
+
 (() => {
  
   let nodeTable = [];
@@ -60,8 +69,23 @@
   getNodesWithTransition(document.body);
 
   // Display the results in the console
-  console.log('%cNodes that have a transition', 'color: red; font-weight: bold;');
+  console.log('%cReadable table of selectors and their transitions', 'color: red; font-weight: bold;');
   console.table(nodeTable);
+
+
+  console.log('%cNodeList for you to inspect (harder to read but more info)', 'color: red; font-weight: bold;');
+
   console.log(nodeArray);
+
+
+  //join all selectors by a comman
+  let selectors = nodeTable.map((item) => item.selector).join(', ');
+
+  console.log('%cSpecific CSS to disable all transitions on this page', 'color: red; font-weight: bold;');
+  console.log(`<style>${selectors}:transition-property: none !important;</style>`);
+
+  
+  console.log('%cGlobal CSS to disable all transitions on this page (not suggested on production)', 'color: red; font-weight: bold;');
+  console.log(`<style>*:transition-property: none !important;</style>`);
 
 })()
