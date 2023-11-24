@@ -8,7 +8,6 @@
   const formatTime = (time) => {
     //round by 2 decimals, use Math.round() for integer
     return Math.round(time * 100) / 100;
-
   };
 
   new PerformanceObserver((entryList) => {
