@@ -13,7 +13,7 @@
   new PerformanceObserver((entryList) => {
     const [pageNav] = entryList.getEntriesByType('navigation');
 
-    // timing start times are relative to navigationStart
+    // timing start times are relative
     const activationStart = pageNav.activationStart || 0;
     const workerStart = Math.max(pageNav.workerStart - activationStart, activationStart);
     const dnsStart = Math.max(pageNav.domainLookupStart - activationStart, workerStart);
