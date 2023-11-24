@@ -23,7 +23,7 @@
     const responseStart = Math.max(pageNav.responseStart - activationStart, requestStart);
 
     // attribution based on https://www.w3.org/TR/navigation-timing-2/#processing-model
-    // use assosictive array to log the results more readable
+    // use associative array to log the results more readable
     let attributionArray = [];
     attributionArray['Redirect Time'] = {'time in ms':formatTime(workerStart - activationStart)};
     attributionArray['Worker and Cache Time'] = {'time in ms':formatTime(dnsStart - workerStart)};
