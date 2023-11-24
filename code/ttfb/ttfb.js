@@ -16,27 +16,27 @@
 
     // timing start times are relative to navigationStart
     const activationStart = pageNav.activationStart || 0;
-    const workerStart = Math.max(pageNav.workerStart - activationStart, 0);
-    const dnsStart = Math.max(pageNav.domainLookupStart - activationStart, 0);
-    const tcpStart = Math.max(pageNav.connectStart - activationStart, 0);
-    const sslStart = Math.max(pageNav.secureConnectionStart - activationStart, 0);
-    const requestStart = Math.max(pageNav.requestStart - activationStart, 0);
-    const responseStart = Math.max(pageNav.responseStart - activationStart, 0);
+    const workerStart = Math.max(pageNav.workerStart - activationStart, activationStart);
+    const dnsStart = Math.max(pageNav.domainLookupStart - activationStart, workerStart);
+    const tcpStart = Math.max(pageNav.connectStart - activationStart, dnsStart);
+    const sslStart = Math.max(pageNav.secureConnectionStart - activationStart, tcpStart);
+    const requestStart = Math.max(pageNav.requestStart - activationStart, sslStart);
+    const responseStart = Math.max(pageNav.responseStart - activationStart, requestStart);
 
     // attribution based on https://www.w3.org/TR/navigation-timing-2/#processing-model
-    const attribution = {
-      redirectTime: formatTime(workerStart - activationStart),
-      workerAndCacheTime: formatTime(dnsStart - workerStart),
-      dnsTime: formatTime(tcpStart - dnsStart),
-      tcpTime: formatTime(sslStart - tcpStart),
-      sslTime: formatTime(requestStart - sslStart),
-      requestTime: formatTime(responseStart - requestStart),
-      totalTTFB: formatTime(responseStart - activationStart),
-    };
+    // use assosictive array to log the results more readable
+    let attributionArray = [];
+    attributionArray['Redirect Time'] = {'time in ms':formatTime(workerStart - activationStart)};
+    attributionArray['Worker and Cache Time'] = {'time in ms':formatTime(dnsStart - workerStart)};
+    attributionArray['DNS Time'] = {'time in ms':formatTime(tcpStart - dnsStart)};
+    attributionArray['TCP Time'] = {'time in ms':formatTime(sslStart - tcpStart)};
+    attributionArray['SSL Time'] = {'time in ms':formatTime(requestStart - sslStart)};
+    attributionArray['Request Time'] = {'time in ms':formatTime(responseStart - requestStart)};
+    attributionArray['Total TTFB'] = {'time in ms':formatTime(responseStart - activationStart)};
 
     // log the results
-    console.log('%cTime to First Byte ('+attribution.totalTTFB+'ms)', 'color: blue; font-weight: bold;');
-    console.table(attribution);
+    console.log('%cTime to First Byte ('+formatTime(responseStart - activationStart)+'ms)', 'color: blue; font-weight: bold;');
+    console.table(attributionArray);
 
     console.log('%cOrigininal navigation entry', 'color: blue; font-weight: bold;');
     console.log(pageNav);
