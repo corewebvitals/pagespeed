@@ -74,7 +74,7 @@
   if (ret.autoTable.length === 0) {
     console.log('%cNo content-visibility: auto found. Consider applying content-visibility: auto to offscreen content (the footer perhaps?)', 'color: orange; font-weight: bold;');
   } else {
-    console.log('%cRCcontent-visibility: auto selectors', 'color: green; font-weight: bold;');
+    console.log('%cContent-visibility: auto selectors', 'color: green; font-weight: bold;');
     console.table(ret.autoTable);
 
     console.log('%cNodeList for you to inspect (harder to read but more info)', 'color: green; font-weight: bold;');
