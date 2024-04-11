@@ -1,13 +1,13 @@
 /* log all background images on a page to the console */
 let bgimg = performance.getEntriesByType('resource')
-  .filter(rs => rs.initiatorType == 'css')
+  .filter(rs => rs.initiatorType == 'css' && rs.contentType?.startsWith('image'))
   .map(rs => {
-  return {
-    name: rs.name,
-    initiator: rs.initiatorType
-  }
-}) || [];
+    return {
+      name: rs.name,
+      initiator: rs.initiatorType
+    }
+  }) || [];
 
-(bgimg.length > 0)?
-    console.table(bgimg):
-    console.log('No background images on this page!');
+(bgimg.length > 0) ?
+  console.table(bgimg) :
+  console.log('No background images on this page!');
