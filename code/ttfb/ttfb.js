@@ -1,3 +1,8 @@
+/**
+ * Time to First Byte (TTFB) is a measurement used as an indication of the responsiveness of a webserver or other network resource. 
+ * TTFB measures the duration from the user or client making an HTTP request to the first byte of the page being received by the client's browser.
+ */
+
 (() => {
 
   const formatTime = (time) => {
