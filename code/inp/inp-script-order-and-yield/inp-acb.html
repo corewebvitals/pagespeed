@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>INP Test: Block → Yield → Menu</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; }
+        body { font-family: system-ui, sans-serif; background: #f5f5f5; padding: 2rem; }
+        main { max-width: 700px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+        h1 { font-size: 1.4rem; margin-bottom: .25rem; }
+        .order { font-size: 1.1rem; color: #666; margin-bottom: 1.5rem; }
+        .order span { font-weight: 600; }
+        .order .block { color: #e53e3e; }
+        .order .menu { color: #3182ce; }
+        .order .yield { color: #38a169; }
+        button#trigger { font-size: 1.1rem; padding: .75rem 2rem; background: #2563eb; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+        button#trigger:active { background: #1d4ed8; }
+        #menu { display: none; margin-top: 1.5rem; padding: 1rem; background: #eef2ff; border-radius: 8px; }
+        #menu.open { display: block; }
+        #menu ul { list-style: none; padding: 0; }
+        #menu ul li { padding: .5rem 0; border-bottom: 1px solid #ddd; }
+        #menu ul li:last-child { border: none; }
+        #inp-display { margin-top: 2rem; padding: 1.5rem; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 12px; text-align: center; display: none; }
+        #inp-display.poor { background: #fef2f2; border-color: #ef4444; }
+        #inp-display.needs-improvement { background: #fffbeb; border-color: #f59e0b; }
+        #inp-display .value { font-size: 3rem; font-weight: 800; }
+        #inp-display .label { font-size: .9rem; color: #666; }
+        nav { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+        nav strong { display: block; margin-bottom: .5rem; font-size: .85rem; color: #999; text-transform: uppercase; letter-spacing: .05em; }
+        nav a { display: inline-block; margin: .25rem .5rem .25rem 0; padding: .35rem .75rem; background: #f3f4f6; border-radius: 6px; text-decoration: none; color: #2563eb; font-size: .85rem; }
+        nav a.current { background: #2563eb; color: #fff; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>INP Script Order Test</h1>
+        <p class="order"><span class="block">1. Block (200ms)</span> → <span class="yield">2. Yield</span> → <span class="menu">3. Menu</span></p>
+
+        <button id="trigger">Click me</button>
+
+        <div id="menu">
+            <ul>
+                <li>Menu item 1</li>
+                <li>Menu item 2</li>
+                <li>Menu item 3</li>
+                <li>Menu item 4</li>
+            </ul>
+        </div>
+
+        <div id="inp-display">
+            <div class="label">Interaction to Next Paint</div>
+            <div class="value" id="inp-value">—</div>
+            <div class="label">milliseconds</div>
+        </div>
+
+        <nav>
+            <strong>All variations</strong>
+            <a href="inp-abc.html">Block → Menu → Yield</a>
+            <a href="inp-acb.html" class="current">Block → Yield → Menu</a>
+            <a href="inp-bac.html">Menu → Block → Yield</a>
+            <a href="inp-bca.html">Menu → Yield → Block</a>
+            <a href="inp-cab.html">Yield → Block → Menu</a>
+            <a href="inp-cba.html">Yield → Menu → Block</a>
+        </nav>
+    </main>
+
+    <script>
+        function blockMainThread() {
+            const end = Date.now() + 200;
+            while (Date.now() < end) {}
+        }
+
+        function openMenu() {
+            document.getElementById('menu').classList.toggle('open');
+        }
+
+        async function yieldToMain() {
+            await scheduler.yield();
+        }
+
+        document.getElementById('trigger').addEventListener('click', async () => {
+            blockMainThread();
+            await yieldToMain();
+            openMenu();
+        });
+    </script>
+
+    <script type="module">
+        import { onINP } from 'https://unpkg.com/web-vitals@4?module';
+        onINP(({ value }) => {
+            scheduler.yield().then(() => {
+                setTimeout(() => {
+                    const display = document.getElementById('inp-display');
+                    const valueEl = document.getElementById('inp-value');
+                    display.style.display = 'block';
+                    valueEl.textContent = Math.round(value);
+                    display.className = value > 500 ? 'poor' : value > 200 ? 'needs-improvement' : '';
+                    display.id = 'inp-display';
+                }, 300);
+            });
+        }, { reportAllChanges: true });
+    </script>
+</body>
+</html>

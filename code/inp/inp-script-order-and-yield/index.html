@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>INP Script Order Tests</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; }
+        body { font-family: system-ui, sans-serif; background: #f5f5f5; padding: 2rem; }
+        main { max-width: 700px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+        h1 { font-size: 1.4rem; margin-bottom: .5rem; }
+        p { color: #666; margin-bottom: 1.5rem; line-height: 1.5; }
+        .legend { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; font-size: .9rem; }
+        .legend span { font-weight: 600; }
+        .block { color: #e53e3e; }
+        .menu { color: #3182ce; }
+        .yield { color: #38a169; }
+        a.test { display: block; padding: 1rem; margin-bottom: .5rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; text-decoration: none; color: #111; font-size: 1rem; }
+        a.test:hover { background: #eef2ff; border-color: #2563eb; }
+        a.test span { font-weight: 600; }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>INP Script Order Tests</h1>
+        <p>How does the order of blocking work, DOM updates, and yielding affect INP? Click each variation to find out.</p>
+        <div class="legend">
+            <div><span class="block">Block</span> = 200ms busy-wait</div>
+            <div><span class="menu">Menu</span> = toggle menu</div>
+            <div><span class="yield">Yield</span> = scheduler.yield()</div>
+        </div>
+        <a class="test" href="inp-abc.html"><span class="block">Block</span> → <span class="menu">Menu</span> → <span class="yield">Yield</span></a>
+        <a class="test" href="inp-acb.html"><span class="block">Block</span> → <span class="yield">Yield</span> → <span class="menu">Menu</span></a>
+        <a class="test" href="inp-bac.html"><span class="menu">Menu</span> → <span class="block">Block</span> → <span class="yield">Yield</span></a>
+        <a class="test" href="inp-bca.html"><span class="menu">Menu</span> → <span class="yield">Yield</span> → <span class="block">Block</span></a>
+        <a class="test" href="inp-cab.html"><span class="yield">Yield</span> → <span class="block">Block</span> → <span class="menu">Menu</span></a>
+        <a class="test" href="inp-cba.html"><span class="yield">Yield</span> → <span class="menu">Menu</span> → <span class="block">Block</span></a>
+    </main>
+</body>
+</html>
