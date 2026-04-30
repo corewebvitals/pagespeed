@@ -6,190 +6,193 @@
     <title>Core Web Vitals — Experiments &amp; Code Samples</title>
     <meta name="description" content="Interactive Core Web Vitals experiments and drop-in code samples for LCP, INP, CLS, and TTFB." />
     <style>
-      *,
-      *::before,
-      *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      :root {
+        --bg: #fafaf9;
+        --fg: #18181b;
+        --muted: #71717a;
+        --line: #e4e4e7;
+        --accent: #18181b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0a0a0a;
+          --fg: #fafafa;
+          --muted: #a1a1aa;
+          --line: #27272a;
+          --accent: #fafafa;
+        }
       }
 
-      a {
-        color: cornflowerblue;
-      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { -webkit-text-size-adjust: 100%; }
 
       body {
-        font-family: "Roboto", sans-serif;
-        color: #333;
-        background-color: #f4f4f4;
-      }
-
-      header {
-        background-color: #333;
-        color: #fff;
-        padding: 2rem;
-        text-align: center;
-      }
-
-      header p {
-        margin-top: 0.5rem;
-        opacity: 0.8;
-      }
-
-      h1 {
-        font-size: 2.5rem;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: var(--fg);
+        background: var(--bg);
+        line-height: 1.6;
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
       }
 
       main {
-        max-width: 900px;
-        margin: 2rem auto;
-        padding: 0 1rem;
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 6rem 1.5rem 8rem;
       }
 
-      section {
-        padding: 2rem;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 2rem;
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+      }
+
+      .lede {
+        color: var(--muted);
+        margin-bottom: 4rem;
       }
 
       h2 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 1.5rem;
       }
 
-      h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.25rem;
+      section { margin-bottom: 4rem; }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+        text-decoration-color: var(--line);
+        text-underline-offset: 3px;
+      }
+      a:hover { text-decoration: underline; }
+
+      ul.list { list-style: none; }
+
+      ul.list > li {
+        padding: 1.25rem 0;
+        border-top: 1px solid var(--line);
+      }
+      ul.list > li:last-child { border-bottom: 1px solid var(--line); }
+
+      .item-title {
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: -0.01em;
       }
 
-      p {
-        line-height: 1.5;
+      .item-desc {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
       }
 
-      .project-list {
-        list-style: none;
-        padding: 0;
-      }
-
-      .project-list li {
-        margin-bottom: 1.25rem;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid #eee;
-      }
-
-      .project-list li:last-child {
-        border-bottom: 0;
-        margin-bottom: 0;
-        padding-bottom: 0;
-      }
-
-      .project-list .meta {
+      .meta {
         margin-top: 0.5rem;
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
+        font-size: 0.85rem;
+        color: var(--muted);
       }
+      .meta a { color: var(--muted); }
+      .meta a:hover { color: var(--fg); }
+      .meta .sep { margin: 0 0.5rem; opacity: 0.5; }
 
-      .badge {
-        background-color: cornflowerblue;
-        color: #fff;
-        padding: 0.4rem 0.9rem;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-
-      .badge.outline {
-        background-color: transparent;
-        color: cornflowerblue;
-        border: 1px solid cornflowerblue;
-      }
-
-      .metric-grid {
+      .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0;
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
       }
-
-      .metric-grid a {
+      .grid > a {
+        padding: 1rem 1.25rem;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
         display: block;
-        padding: 1rem;
-        background: #f9f9f9;
-        border: 1px solid #eee;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #333;
       }
-
-      .metric-grid a strong {
+      .grid > a:hover { background: color-mix(in oklab, var(--fg) 4%, transparent); text-decoration: none; }
+      .grid .label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
         display: block;
-        color: cornflowerblue;
-        margin-bottom: 0.25rem;
+      }
+      .grid .name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
+        display: block;
       }
 
       footer {
-        text-align: center;
-        padding: 1.5rem;
-        color: #777;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 6rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--line);
       }
     </style>
   </head>
   <body>
-    <header>
-      <h1>Core Web Vitals</h1>
-      <p>Experiments &amp; code samples for LCP, INP, CLS, and TTFB</p>
-    </header>
     <main>
+      <h1>Core Web Vitals</h1>
+      <p class="lede">Experiments and drop-in code samples for LCP, INP, CLS, and TTFB.</p>
+
       <section>
         <h2>Experiments</h2>
-        <p>Interactive demos. Open each one in the browser and watch the metric.</p>
-        <ul class="project-list">
+        <ul class="list">
           <li>
-            <h3>LCP Image</h3>
-            <p>~25 variants of an LCP image: lazy, preload, fetchpriority, AVIF/WebP, picture tag, video poster, and more. Average LCP per variant is recorded in session storage.</p>
-            <div class="meta">
-              <a class="badge" href="experiments/lcp-image/">View live demo</a>
-              <a class="badge outline" href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/lcp-image">Source</a>
-            </div>
+            <a class="item-title" href="experiments/lcp-image/">LCP Image →</a>
+            <p class="item-desc">~25 variants of an LCP image: lazy, preload, fetchpriority, AVIF/WebP, picture, video poster. Each variant records its average LCP.</p>
+            <p class="meta">
+              <a href="experiments/lcp-image/">Demo</a>
+              <span class="sep">·</span>
+              <a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/lcp-image">Source</a>
+            </p>
           </li>
           <li>
-            <h3>View Transitions</h3>
-            <p>Measure how the auto view-transition affects LCP across navigations. Collects 100 LCP samples and reports the average for transitioned vs non-transitioned variants.</p>
-            <div class="meta">
-              <a class="badge" href="experiments/view-transition/">View live demo</a>
-              <a class="badge outline" href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/view-transition">Source</a>
-            </div>
+            <a class="item-title" href="experiments/view-transition/">View Transitions →</a>
+            <p class="item-desc">Measure how the auto view-transition affects LCP across navigations. Collects 100 samples and reports averages.</p>
+            <p class="meta">
+              <a href="experiments/view-transition/">Demo</a>
+              <span class="sep">·</span>
+              <a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/view-transition">Source</a>
+            </p>
           </li>
           <li>
-            <h3>dataLayer scheduled after paint</h3>
-            <p>Drop-in script that defers <code>dataLayer.push</code> until after the next paint, so synchronous GTM work doesn't blow up INP during interactions.</p>
-            <div class="meta">
-              <a class="badge" href="experiments/datalayer-schedule-after-paint/demo.html">View live demo</a>
-              <a class="badge outline" href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/datalayer-schedule-after-paint">Source</a>
-            </div>
+            <a class="item-title" href="experiments/datalayer-schedule-after-paint/demo.html">dataLayer after paint →</a>
+            <p class="item-desc">Drop-in script that defers <code>dataLayer.push</code> until after the next paint, so synchronous GTM work doesn't blow up INP during interactions.</p>
+            <p class="meta">
+              <a href="experiments/datalayer-schedule-after-paint/demo.html">Demo</a>
+              <span class="sep">·</span>
+              <a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/datalayer-schedule-after-paint">Source</a>
+            </p>
           </li>
         </ul>
       </section>
 
       <section>
         <h2>Code samples</h2>
-        <p>Drop-in snippets you can copy into your own site, grouped by Core Web Vital.</p>
-        <div class="metric-grid">
-          <a href="code/cls/"><strong>CLS</strong>Cumulative Layout Shift fixes</a>
-          <a href="code/inp/"><strong>INP</strong>Interaction to Next Paint patterns</a>
-          <a href="code/performance/"><strong>Performance</strong>General helpers</a>
-          <a href="code/ttfb/"><strong>TTFB</strong>Time to First Byte</a>
+        <div class="grid">
+          <a href="code/inp/"><span class="label">INP</span><span class="name">Interaction to Next Paint</span></a>
+          <a href="code/cls/"><span class="label">CLS</span><span class="name">Cumulative Layout Shift</span></a>
+          <a href="code/ttfb/"><span class="label">TTFB</span><span class="name">Time to First Byte</span></a>
+          <a href="code/performance/"><span class="label">Misc</span><span class="name">Performance helpers</span></a>
         </div>
       </section>
+
+      <footer>
+        <a href="https://www.corewebvitals.io">corewebvitals.io</a>
+        <span class="sep">·</span>
+        <a href="https://github.com/corewebvitals/pagespeed">GitHub</a>
+      </footer>
     </main>
-    <footer>
-      <p>
-        <a href="https://www.corewebvitals.io">corewebvitals.io</a> ·
-        <a href="https://github.com/corewebvitals/pagespeed">Source on GitHub</a>
-      </p>
-    </footer>
   </body>
 </html>
