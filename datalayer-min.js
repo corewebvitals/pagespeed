@@ -1,0 +1,1 @@
+async function awaitPaint(a){await new Promise(a=>{setTimeout(a,200),requestAnimationFrame(()=>{setTimeout(a,50)})}),"function"==typeof a&&a()}if(window.dataLayer=window.dataLayer||[],"function"==typeof window.dataLayer.push){let a=window.dataLayer.push;window.dataLayer.push=function(...t){awaitPaint(()=>{a.apply(window.dataLayer,t)})}}
