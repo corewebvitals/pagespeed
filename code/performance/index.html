@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Performance helpers — code samples</title>
+    <style>
+      :root { --bg:#fafaf9; --fg:#18181b; --muted:#71717a; --line:#e4e4e7; }
+      @media (prefers-color-scheme: dark) { :root { --bg:#0a0a0a; --fg:#fafafa; --muted:#a1a1aa; --line:#27272a; } }
+      *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+      body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--fg); background:var(--bg); line-height:1.6; font-size:16px; -webkit-font-smoothing:antialiased; }
+      main { max-width:640px; margin:0 auto; padding:6rem 1.5rem 8rem; }
+      .crumb { font-size:0.85rem; color:var(--muted); margin-bottom:1rem; }
+      .crumb a { color:var(--muted); text-decoration:none; }
+      .crumb a:hover { color:var(--fg); }
+      h1 { font-size:1.75rem; font-weight:600; letter-spacing:-0.02em; margin-bottom:0.5rem; }
+      .lede { color:var(--muted); margin-bottom:3rem; }
+      ul.list { list-style:none; }
+      ul.list > li { padding:1.25rem 0; border-top:1px solid var(--line); }
+      ul.list > li:last-child { border-bottom:1px solid var(--line); }
+      .item-title { font-weight:600; font-size:1rem; letter-spacing:-0.01em; color:var(--fg); text-decoration:none; }
+      .item-title:hover { text-decoration:underline; text-underline-offset:3px; }
+      .item-desc { color:var(--muted); font-size:0.95rem; margin-top:0.25rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="crumb"><a href="../../">← Core Web Vitals</a></p>
+      <h1>Performance helpers</h1>
+      <p class="lede">General-purpose performance snippets — diagnostics that don't fit neatly under a single Core Web Vital.</p>
+      <ul class="list">
+        <li>
+          <a class="item-title" href="resource-css-initiator.js">resource-css-initiator.js →</a>
+          <p class="item-desc">Logs every image loaded via CSS (<code>background-image</code>, <code>border-image</code>, etc.) so you can spot hidden network cost from stylesheets.</p>
+        </li>
+      </ul>
+    </main>
+  </body>
+</html>
