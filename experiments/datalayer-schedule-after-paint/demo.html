@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dataLayer scheduled after paint — demo</title>
+    <style>
+      body {
+        font-family: "Roboto", system-ui, sans-serif;
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        color: #333;
+        line-height: 1.5;
+      }
+      header {
+        background: #333;
+        color: #fff;
+        margin: -2rem -1rem 2rem;
+        padding: 1.5rem 1rem;
+        text-align: center;
+      }
+      header h1 { font-size: 1.6rem; }
+      button {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+        background: cornflowerblue;
+        color: #fff;
+        border: 0;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover { background: #5478c4; }
+      pre {
+        background: #f4f4f4;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        padding: 1rem;
+        overflow: auto;
+        white-space: pre-wrap;
+      }
+      code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 3px; }
+      a { color: cornflowerblue; }
+      .note { background: #fff8dc; border-left: 4px solid #e0c34c; padding: 0.75rem 1rem; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>dataLayer scheduled after paint</h1>
+      <p>Live demo of <a href="datalayer.js" style="color:#fff">datalayer.js</a></p>
+    </header>
+
+    <p>
+      This page loads <code>datalayer.js</code> which wraps <code>window.dataLayer.push</code> so every push runs
+      after the next browser paint instead of synchronously during interaction. That keeps INP from being blown
+      up by GTM tags that do heavy work on click.
+    </p>
+
+    <p>
+      Click the button. The page calls <code>dataLayer.push</code> immediately, but the wrapped version waits
+      for the next animation frame + a small buffer before invoking the original push. The log below records
+      both timestamps so you can see the gap.
+    </p>
+
+    <p>
+      <button id="fire">Fire dataLayer.push</button>
+    </p>
+
+    <h2>Log</h2>
+    <pre id="log">(no events yet)</pre>
+
+    <p class="note">
+      Open DevTools → Performance and record while clicking — you'll see the push body land in the
+      <em>next</em> frame, not the click handler frame.
+    </p>
+
+    <p>
+      Source: <a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/datalayer-schedule-after-paint">github.com/corewebvitals/pagespeed/.../datalayer-schedule-after-paint</a>
+    </p>
+
+    <script>
+      // Initialise dataLayer first so the wrapper has something to override.
+      window.dataLayer = window.dataLayer || [];
+
+      // Patch push so we can observe when it actually runs.
+      const originalNativePush = window.dataLayer.push;
+      window.dataLayer.push = function (...args) {
+        const t = performance.now().toFixed(1);
+        log(`[${t}ms] dataLayer.push() RAN with: ${JSON.stringify(args[0])}`);
+        return originalNativePush.apply(window.dataLayer, args);
+      };
+
+      function log(msg) {
+        const el = document.getElementById('log');
+        if (el.textContent === '(no events yet)') el.textContent = '';
+        el.textContent += msg + '\n';
+      }
+    </script>
+
+    <!-- Load the wrapper AFTER our observer push so it wraps the observer too -->
+    <script src="datalayer.js"></script>
+
+    <script>
+      document.getElementById('fire').addEventListener('click', () => {
+        const t = performance.now().toFixed(1);
+        log(`[${t}ms] click handler called dataLayer.push(...) — observe the delay until it actually runs`);
+        window.dataLayer.push({ event: 'demo_click', when: Date.now() });
+      });
+    </script>
+  </body>
+</html>
