@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>No View transition page 1</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+      }
+      nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+      }
+      .container {
+        padding: 20px;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      @view-transition {
+        navigation: none;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index-vt1.html">Page 1</a>
+      <a href="index-vt2.html">Page 1</a>
+      <a href="index-nvt1.html">Page 1</a>
+      <a href="index-nvt2.html">Page 1</a>
+    </nav>
+    <div class="container">
+      <h1>Welcome to the Example Page</h1>
+      <p>This is a simple example of an HTML page with some CSS styling. Below are a few images:</p>
+      <div class="images">
+        <img src="img1.jpg?rnd=1" alt="Placeholder Image 1" />
+        <img src="img1.jpg?rnd=2" alt="Placeholder Image 2" />
+        <img src="img1.jpg?rnd=3" alt="Placeholder Image 3" />
+      </div>
+      <footer id="lcp-timing">LCP Timing: Not measured yet</footer>
+      <script src="lcp.js"></script>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+      }
+      nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+      }
+      .container {
+        padding: 20px;
+      }
+      .win {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 0.5em;
+        border-radius: 5px;
+      }
+
+      .lose{
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 0.5em;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <nav>
+        <a href="index.html">Restart the test</a>
+      </nav>
+    </nav>
+    <div class="container">
+      <h1>Results of the View Transition Test Page</h1>
+      <p>This is the average LCP speed for the variant with and without view transitions</p>
+      <div id="results">
+        <p>View Transition Auto: Calculating...</p>
+        <p>View Transition None: Calculating...</p>
+      </div>
+    </div>
+    <footer>
+      <!-- Footer content can be added here -->
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const lcpTimings = JSON.parse(localStorage.getItem("lcpTimings")) || [];
+
+        if (lcpTimings.length >= 100) {
+          const first50 = lcpTimings.slice(0, 50);
+          const next50 = lcpTimings.slice(50, 100);
+
+          const average = (arr) => arr.reduce((acc, curr) => acc + curr, 0) / arr.length;
+
+          const averageFirst50 = average(first50);
+          const averageNext50 = average(next50);
+          const resultsContainer = document.getElementById("results");
+
+          resultsContainer.innerHTML = `
+                    <p>View Transition Auto (50 page loads): <b>${averageFirst50.toFixed(2)} ms</b></p>
+                    <p>View Transition None (50 page loads): <b>${averageNext50.toFixed(2)} ms</b></p>
+                `;
+
+          if (averageFirst50 < averageNext50) {
+            resultsContainer.children[0].classList.add("win");
+            resultsContainer.children[1].classList.add("lose");
+          } else {
+            resultsContainer.children[1].classList.add("win");
+            resultsContainer.children[0].classList.add("lose");          }
+        } else {
+          document.getElementById("results").innerHTML = `
+                    <p>Not enough data to calculate results. Please ensure there are at least 100 LCP timings in localStorage.</p>
+                `;
+        }
+      });
+    </script>
+  </body>
+</html>

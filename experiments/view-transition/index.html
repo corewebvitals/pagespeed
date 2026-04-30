@@ -1,0 +1,67 @@
+""><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>No View transition page 1</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+      }
+      nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+      }
+      .container {
+        padding: 20px;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      @view-transition {
+        navigation: none;
+      }
+
+      .a{
+                display: inline-block;
+        padding: 10px 20px;
+        border: none;
+        background-color: green;
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+      }
+      
+
+    
+    </style>
+    <script>
+      window.localStorage.clear();
+    </script>
+  </head>
+  <body>
+    <nav>
+&nbsp;    </nav>
+    <div class="container">
+      <h1>Welcome to the view transition test Page</h1>
+      <p>View transitions are awesome but maybe they slow down the page? Well, it's about time we find out!</p>
+      <p>Click the button below to start the test but before you do consider disabling the browser cache to simulate uncached page loads or emulate a slow device with 4g and cpu slowdown?</p>
+      <a href="index-vt1.html" class="a">Start the test</a>
+    </div>
+  </body>
+</html>
