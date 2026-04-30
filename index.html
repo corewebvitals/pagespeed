@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap Demo</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <script src="js/jquery.js" defer></script>
+    <script src="js/bootstrap.js" defer></script>
+    <script src="js/chart.js" defer></script>
+    <script src="js/index.js" defer></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">LCP Test</a>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="display-4">Welcome to LCP Test</h1>
+      <p class="lead">We are here to find out how to <a href="https://www.corewebvitals.io/core-web-vitals/largest-contentful-paint/optimize-lcp-image"></a>improve or slow down the LCP!</p>
+      <p><b>Getting started:</b></p>
+      <ol>
+        <li>First upload all the files to your webserver</li>
+        <li>Open the developer tools (F12) and go to the network tab</li>
+        <li><b>Disable your browsers cache</b> by checking the disable cache checkbox</li>
+        <li><b>Keep the network tab open!!</b> If you close it you you will just test your browser cache</li>
+        <li>Click on the start test button</li>
+      </ol>
+
+      <a class="btn btn-primary" id="startFastTest" href="#">Start Quick Test</a>
+      <a class="btn btn-primary" id="startSlowTest" href="#">Start Full Test</a>
+      <hr class="my-4" />
+
+      <h5>Text based LCP</h5>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="text-based.html">text - no image</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+      </ul>
+
+      <h5 class="mt-4">Jpeg image</h5>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="large-1img.html">large - 1 image</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="large-1img-lazy.html">large - 1 image - lazy loaded</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="large-1img-preload.html">large - 1 image - preloaded</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="large-1img-fetchpriohigh.html">large - 1 image - high fetchpriority</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="large-1img-asyncdecoded.html">large - 1 image - decoding async</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+      </ul>
+
+      <h5 class="mt-4">Resized jpeg image</h5>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="resized-1img.html">resized - 1 image</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="resized-1img-lazy.html">resized - 1 image - lazy loaded</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="resized-1img-preload.html">resized - 1 image - preloaded</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+      </ul>
+
+      <h5 class="mt-4">Newer image formats</h5>
+
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="converted-1img-webp.html">converted - 1 image - webp</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="converted-1img-avif.html">converted - 1 image - avif</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="converted-1img-picturetag.html">converted - 1 image - picture tag</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+      </ul>
+
+      <h5 class="mt-4">Video formats</h5>
+
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="video-poster.html">video with poster image</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="video-noposter.html">No poster image</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+      </ul>
+
+      <h5 class="mt-4">Multiple images</h5>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="multiple-eager.html">multiple - all eager</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="multiple-lazy.html">multiple - all lazy</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="multiple-lazy-eager.html">multiple - all lazy lcp eager</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="multiple-lazy-eager-high-fetchprio.html">multiple - all lazy lcp eager + fetchprio</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="multiple-lazy-eager-early-preloaded.html">multiple - all lazy lcp eager + early preload</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="multiple-lazy-eager-late-preloaded.html">multiple - all lazy lcp eager + late preload</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+      </ul>
+
+      <h5 class="mt-4">Misc</h5>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="misc-fadein.html">fade in LCP</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="misc-csr.html">Client side render</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col-10" href="misc-background.html">Background Image</a>
+            <span class="col badge bg-primary ml-4 badge-sm">...</span>
+          </div>
+        </li>
+      
+      </ul>
+
+
+
+      <hr class="my-4" />
+
+      <h2 class="mt-4">Let's chart the results</h2>
+      <p>Let's visualize the results and see which one is faster!</p>
+
+      <h5 class="mt-4">Default order:</h5>
+      <div id="chartContainer" class="card my-4"></div>
+
+      <h5>From fast to slow</h5>
+
+      <div id="chartContainersorted" class="card my-4"></div>
+
+      <br />
+      <br />
+      <br />
+      <br />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap Demo</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <style>
+        #backgbround {
+            background-image: url('img/lcp-1296.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+        }
+    </style>
+    <script src="js/jquery.js" defer></script>
+    <script src="js/bootstrap.js" defer></script>
+    <script src="js/test.js" defer></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">LCP Test</a>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="display-4">Resized - 1 image</h1>
+      <p class="lead">The test is at <span id="progress">..</span></p>
+      <hr class="my-4" />
+
+      <div id="backgbround">
+
+      </div>
+    </div>
+
+    <footer class="footer fixed-bottom bg-primary text-white">
+      <div class="container py-2">LCP timing: <span id="lcptiming">n.a.</span></div>
+    </footer>
+  </body>
+</html>
