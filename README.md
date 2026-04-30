@@ -18,6 +18,7 @@ Visit each one in the browser at the live URL.
 
 | Folder | Live | About |
 |---|---|---|
+| [`experiments/michotte-inp`](experiments/michotte-inp) ★ | [▶ demo](https://corewebvitals.github.io/pagespeed/experiments/michotte-inp/) | The 1946 Michotte launching-effect experiment whose 100/200ms causality thresholds became the modern INP buckets — interactive replication |
 | [`experiments/lcp-image`](experiments/lcp-image) | [▶ demo](https://corewebvitals.github.io/pagespeed/experiments/lcp-image/) | ~25 variants of an LCP image (lazy, preload, fetchpriority, AVIF/WebP, picture, video poster, …) |
 | [`experiments/view-transition`](experiments/view-transition) | [▶ demo](https://corewebvitals.github.io/pagespeed/experiments/view-transition/) | Measure how `view-transition-name: auto` affects LCP across navigations |
 | [`experiments/datalayer-schedule-after-paint`](experiments/datalayer-schedule-after-paint) | [▶ demo](https://corewebvitals.github.io/pagespeed/experiments/datalayer-schedule-after-paint/demo.html) | Drop-in script that defers `dataLayer.push` until after paint to protect INP |

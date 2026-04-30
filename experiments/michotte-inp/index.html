@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 1946 experiment that defined the INP threshold</title>
+<meta name="description" content="In 1946, psychologist Albert Michotte ran an experiment on perceived causality. His findings became the Interaction to Next Paint thresholds 80 years later. Try it yourself.">
+
+<meta property="og:title" content="The 1946 experiment that defined the INP threshold">
+<meta property="og:description" content="Drag the slider. Watch causality break down at exactly the INP threshold.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The 1946 experiment that defined the INP threshold">
+<meta name="twitter:description" content="Drag the slider. Watch causality break down at exactly the INP threshold.">
+<meta name="twitter:image" content="og-image.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='10' width='10' height='12' rx='2' fill='%23222'/%3E%3Crect x='18' y='10' width='10' height='12' rx='2' fill='%23D85A30'/%3E%3C/svg%3E">
+
+<style>
+:root {
+  --bg: #FAF9F6;
+  --surface: #FFFFFF;
+  --text: #1A1A1A;
+  --text-muted: #5A5A55;
+  --text-faint: #8A8A82;
+  --border: #E5E3DB;
+  --border-strong: #D0CDC2;
+  --accent: #D85A30;
+  --green-bg: #E1F5EE;
+  --green-text: #04342C;
+  --green-mid: #0F6E56;
+  --amber-bg: #FAEEDA;
+  --amber-text: #412402;
+  --amber-mid: #854F0B;
+  --red-bg: #FCEBEB;
+  --red-text: #501313;
+  --red-mid: #A32D2D;
+  --code-bg: #F1EFE8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14130F;
+    --surface: #1E1D19;
+    --text: #F0EEE6;
+    --text-muted: #A8A69B;
+    --text-faint: #75736B;
+    --border: #2C2B26;
+    --border-strong: #3D3B34;
+    --accent: #F0997B;
+    --green-bg: #04342C;
+    --green-text: #9FE1CB;
+    --green-mid: #5DCAA5;
+    --amber-bg: #412402;
+    --amber-text: #FAC775;
+    --amber-mid: #EF9F27;
+    --red-bg: #501313;
+    --red-text: #F09595;
+    --red-mid: #E24B4A;
+    --code-bg: #2C2B26;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+@media (max-width: 600px) {
+  main { padding: 2.5rem 1.25rem 4rem; }
+  body { font-size: 16px; }
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: 38px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.5rem;
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 30px; }
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 3rem 0 1rem;
+  color: var(--text);
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 2rem 0 0.5rem;
+  color: var(--text);
+}
+
+p {
+  margin: 0 0 1.25rem;
+  color: var(--text);
+}
+
+p.lede {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 600px) {
+  p.lede { font-size: 17px; }
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  border-bottom-color: rgba(216, 90, 48, 0.3);
+  transition: border-color 0.15s;
+}
+
+a:hover {
+  border-bottom-color: currentColor;
+}
+
+code {
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+
+.experiment {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 600px) {
+  .experiment { padding: 1.25rem; margin: 1.5rem -0.25rem; }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 1.25rem;
+}
+
+.controls label {
+  font-size: 14px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.controls .value {
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 64px;
+  text-align: right;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 24px;
+  margin: 0;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--border-strong);
+  border-radius: 2px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--border-strong);
+  border-radius: 2px;
+  border: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--text);
+  border-radius: 50%;
+  margin-top: -8px;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--text);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+.stage {
+  position: relative;
+  height: 160px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 0 0 1.25rem;
+  overflow: hidden;
+}
+
+.stage svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 1.25rem;
+}
+
+button {
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.05s;
+  min-width: 100px;
+}
+
+button:hover { opacity: 0.85; }
+button:active { transform: scale(0.98); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.reading {
+  flex: 1;
+  text-align: right;
+}
+
+.reading-label {
+  font-size: 12px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+
+.reading-text {
+  font-size: 17px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.scale {
+  position: relative;
+  height: 60px;
+  border-radius: 8px;
+  margin: 0 0 0.75rem;
+  overflow: hidden;
+  display: flex;
+  border: 1px solid var(--border);
+}
+
+.scale-band {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+  padding: 6px 4px;
+}
+
+.scale-band .ms {
+  font-weight: 400;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.scale-band.causal { background: var(--green-bg); color: var(--green-text); flex: 1; }
+.scale-band.causal .ms { color: var(--green-mid); }
+.scale-band.mixed { background: var(--amber-bg); color: var(--amber-text); flex: 1; }
+.scale-band.mixed .ms { color: var(--amber-mid); }
+.scale-band.unrelated { background: var(--red-bg); color: var(--red-text); flex: 4; }
+.scale-band.unrelated .ms { color: var(--red-mid); }
+
+.marker {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--text);
+  transition: left 0.18s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.experiment-footer {
+  font-size: 12px;
+  color: var(--text-faint);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.experiment-footer .sep {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+blockquote {
+  margin: 2rem 0;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  border-left: 3px solid var(--accent);
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.thresholds-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 15px;
+}
+
+.thresholds-table th,
+.thresholds-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.thresholds-table th {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.thresholds-table td.label {
+  font-weight: 500;
+}
+
+.thresholds-table .verdict-good { color: var(--green-mid); font-weight: 500; }
+.thresholds-table .verdict-mixed { color: var(--amber-mid); font-weight: 500; }
+.thresholds-table .verdict-bad { color: var(--red-mid); font-weight: 500; }
+
+.citations {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.citations h2 {
+  margin-top: 0;
+}
+
+.citations ol {
+  padding-left: 1.5rem;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.citations li {
+  margin-bottom: 0.75rem;
+}
+
+.byline {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-faint);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.byline a {
+  color: var(--text-muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
+</head>
+<body>
+
+<main>
+
+<p class="eyebrow">Core Web Vitals</p>
+
+<h1>The 1946 experiment that defined the INP threshold</h1>
+
+<p class="lede">Google did not pick 200ms because it sounded reasonable. The number traces back to a Belgian psychologist, two moving shapes, and a finding about how the human brain perceives causality.</p>
+
+<h2>The experiment</h2>
+
+<p>In 1946, Albert Michotte published <em>La perception de la causalité</em>. He was trying to answer a question philosophers had argued about for centuries. Hume said causality cannot be perceived directly. We see one event, then another, and infer the connection. Michotte thought Hume was wrong.</p>
+
+<p>To test it, he showed people two moving shapes on a screen. Object A moves toward Object B. The moment A touches B, A stops and B starts moving away.</p>
+
+<p>Then he varied one thing. The delay between contact and B starting to move. <strong>Drag the slider below and hit Play.</strong></p>
+
+<div class="experiment" role="region" aria-label="Interactive Michotte launching effect">
+  <h3 class="sr-only">Interactive demonstration</h3>
+
+  <div class="controls">
+    <label for="delay">Delay</label>
+    <input type="range" id="delay" min="0" max="600" value="50" step="10" aria-label="Delay before object B moves, in milliseconds">
+    <span class="value" id="delay-out">50 ms</span>
+  </div>
+
+  <div class="stage" aria-hidden="true">
+    <svg viewBox="0 0 680 160" preserveAspectRatio="xMidYMid meet">
+      <line x1="0" y1="115" x2="680" y2="115" stroke="var(--border)" stroke-width="1"/>
+      <rect id="boxA" x="80" y="70" width="44" height="44" rx="4" fill="var(--text)"/>
+      <rect id="boxB" x="380" y="70" width="44" height="44" rx="4" fill="var(--accent)"/>
+    </svg>
+  </div>
+
+  <div class="row">
+    <button id="play" type="button">Play</button>
+    <div class="reading" aria-live="polite">
+      <div class="reading-label">Perception</div>
+      <div class="reading-text" id="reading-text">A caused B to move</div>
+    </div>
+  </div>
+
+  <div class="scale" role="img" aria-label="Perception scale showing three bands: 0 to 100 milliseconds causal, 100 to 200 milliseconds mixed, over 200 milliseconds unrelated events">
+    <div class="scale-band causal">
+      <span>Causal</span>
+      <span class="ms">0&ndash;100&nbsp;ms</span>
+    </div>
+    <div class="scale-band mixed">
+      <span>Mixed</span>
+      <span class="ms">100&ndash;200&nbsp;ms</span>
+    </div>
+    <div class="scale-band unrelated">
+      <span>Unrelated events</span>
+      <span class="ms">over&nbsp;200&nbsp;ms</span>
+    </div>
+    <div class="marker" id="marker" style="left: 8.33%;" aria-hidden="true"></div>
+  </div>
+
+  <p class="experiment-footer">
+    <span>Michotte 1946</span>
+    <span class="sep">▪</span>
+    <span>INP thresholds: 200 ms good, 500 ms poor</span>
+  </p>
+</div>
+
+<h2>What he found</h2>
+
+<p>The result was reproducible across hundreds of observers. The boundary was sharp.</p>
+
+<table class="thresholds-table">
+  <thead>
+    <tr>
+      <th>Delay</th>
+      <th>What people saw</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="label">Below 100 ms</td>
+      <td class="verdict-good">A caused B to move</td>
+    </tr>
+    <tr>
+      <td class="label">100 to 200 ms</td>
+      <td class="verdict-mixed">Mixed. Some saw causality, some did not.</td>
+    </tr>
+    <tr>
+      <td class="label">Above 200 ms</td>
+      <td class="verdict-bad">Two unrelated events</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Michotte called the first case the <em>launching effect</em>. People did not infer causality. They <em>saw</em> it, the same way they see colour or motion. Above 200ms the perception collapsed. The two shapes became two unrelated events that happened near each other.</p>
+
+<h2>The chain to INP</h2>
+
+<p>Fast forward 22 years. In 1968, Robert Miller at IBM published <em>Response time in man-computer conversational transactions</em>. Miller cites Michotte. He defines a 100ms threshold for what he calls "response to control activation." The delay between pressing a key and visual feedback should be no more than 0.1 to 0.2 seconds, he writes. Otherwise the user stops feeling like the press caused the response.</p>
+
+<p>In 1993, Jakob Nielsen wrote <em>Response Times: The 3 Important Limits</em>, the most cited piece of HCI writing on the web. Nielsen cites Miller. 0.1 second is the limit for having the user feel that the system is reacting instantaneously.</p>
+
+<p>In 2014, Kaaresoja and others tested it on touchscreens specifically. Same finding. When the delay between tapping a virtual button and visual feedback was 85ms or less, participants reported the feedback appeared simultaneous with the tap 75% of the time. Above 100ms, perceived quality dropped. Above 300ms, it was very low.</p>
+
+<p>Then in 2022, Google's Chrome team published the threshold reasoning for Core Web Vitals. From their documentation:</p>
+
+<blockquote>
+Research is reasonably consistent in concluding that delays in visual feedback of up to around 100 ms are perceived as being caused by an associated source, such as a user input. This suggests that an ideal Interaction to Next Paint "good" threshold would be close to this.
+</blockquote>
+
+<p>They wanted 100ms. They settled on 200ms because CrUX field data showed 100ms was unachievable on lower-end mobile devices. Only 12% of mobile origins met it. At 200ms, 56% did. The threshold had to be reachable to be useful.</p>
+
+<p>500ms became the "poor" threshold for the same reason. The research said 300ms. The achievability data said 500ms.</p>
+
+<h2>Why this matters</h2>
+
+<p>The INP score is not a synthetic Google metric. It is a measurement of whether your users still believe their finger is connected to your interface. The same perceptual machinery Michotte was probing in 1946 with two squares on a screen is running every time someone taps a button on your site.</p>
+
+<p>Tap. Wait. If the screen responds in under 100ms, the brain stitches the two events together. The tap caused the response. Above 200ms, they feel like separate things. The user wonders if the tap registered. They tap again. They lose trust in the interface.</p>
+
+<p>The thresholds Google chose are a compromise between what the brain wants and what mobile hardware can deliver. The lower bound is the perceptual limit. The upper bound is the limit of what feels broken.</p>
+
+<p>Optimising INP is not about hitting a Google number. It is about staying inside the window where the human visual system still treats your interface as a causal agent.</p>
+
+<section class="citations">
+<h2>Sources</h2>
+<ol>
+  <li>Michotte, A. (1946). <em>La perception de la causalité</em>. Louvain: Études de Psychologie. English translation: <em>The perception of causality</em>, 1963, Methuen.</li>
+  <li>Miller, R. B. (1968). <a href="https://dl.acm.org/doi/10.1145/1476589.1476628">Response time in man-computer conversational transactions</a>. AFIPS Fall Joint Computing Conference.</li>
+  <li>Nielsen, J. (1993). <a href="https://www.nngroup.com/articles/response-times-3-important-limits/">Response Times: The 3 Important Limits</a>. Nielsen Norman Group.</li>
+  <li>Kaaresoja, T., Brewster, S., Lantz, V. (2014). <a href="https://dl.acm.org/doi/10.1145/2611387">Towards the Temporally Perfect Virtual Button</a>. ACM Transactions on Applied Perception.</li>
+  <li>McQuade, B., Pollard, B. (2020, updated 2025). <a href="https://web.dev/articles/defining-core-web-vitals-thresholds">How the Core Web Vitals metrics thresholds were defined</a>. web.dev.</li>
+  <li>White, P. (2025). <a href="https://royalsocietypublishing.org/doi/10.1098/rsos.250244">Michotte's research on perceptual impressions of causality: a registered replication study</a>. Royal Society Open Science.</li>
+</ol>
+</section>
+
+<div class="byline">
+  <span>Built by <a href="https://www.corewebvitals.io">Arjen Karel</a>, Core Web Vitals consultant</span>
+  <span><a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/michotte-inp">View source on GitHub</a></span>
+</div>
+
+</main>
+
+<script>
+(function() {
+  'use strict';
+
+  var delayInput = document.getElementById('delay');
+  var delayOut = document.getElementById('delay-out');
+  var boxA = document.getElementById('boxA');
+  var boxB = document.getElementById('boxB');
+  var playBtn = document.getElementById('play');
+  var readingText = document.getElementById('reading-text');
+  var marker = document.getElementById('marker');
+
+  var animating = false;
+  var rafId = null;
+  var timeoutId = null;
+
+  var SCALE_MAX = 600;
+  var STAGE_VIEWBOX_WIDTH = 680;
+  var BOX_WIDTH = 44;
+  var BOX_A_START = 80;
+  var BOX_A_END = 336;
+  var BOX_B_START = 380;
+  var BOX_B_END = 600;
+  var A_DURATION = 1100;
+  var B_DURATION = 1100;
+
+  function readingFor(ms) {
+    if (ms <= 100) return { text: 'A caused B to move', color: 'var(--green-mid)' };
+    if (ms <= 200) return { text: 'Mixed perception', color: 'var(--amber-mid)' };
+    return { text: 'Two unrelated events', color: 'var(--red-mid)' };
+  }
+
+  function updateReading() {
+    var ms = parseInt(delayInput.value, 10);
+    delayOut.textContent = ms + ' ms';
+    var r = readingFor(ms);
+    readingText.textContent = r.text;
+    readingText.style.color = r.color;
+    var pct = Math.min(100, (ms / SCALE_MAX) * 100);
+    marker.style.left = 'calc(' + pct.toFixed(2) + '% - 1px)';
+  }
+
+  function reset() {
+    if (rafId) cancelAnimationFrame(rafId);
+    if (timeoutId) clearTimeout(timeoutId);
+    boxA.setAttribute('x', BOX_A_START);
+    boxB.setAttribute('x', BOX_B_START);
+  }
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function animate() {
+    if (animating) return;
+    var ms = parseInt(delayInput.value, 10);
+    reset();
+    animating = true;
+    playBtn.disabled = true;
+
+    var startA = performance.now();
+
+    function stepA(now) {
+      var t = Math.min(1, (now - startA) / A_DURATION);
+      var eased = easeInOutCubic(t);
+      var x = BOX_A_START + (BOX_A_END - BOX_A_START) * eased;
+      boxA.setAttribute('x', x.toFixed(2));
+      if (t < 1) {
+        rafId = requestAnimationFrame(stepA);
+      } else {
+        timeoutId = setTimeout(startB, ms);
+      }
+    }
+
+    function startB() {
+      var startTime = performance.now();
+      function stepB(now) {
+        var t = Math.min(1, (now - startTime) / B_DURATION);
+        var eased = easeInOutCubic(t);
+        var x = BOX_B_START + (BOX_B_END - BOX_B_START) * eased;
+        boxB.setAttribute('x', x.toFixed(2));
+        if (t < 1) {
+          rafId = requestAnimationFrame(stepB);
+        } else {
+          animating = false;
+          playBtn.disabled = false;
+        }
+      }
+      rafId = requestAnimationFrame(stepB);
+    }
+
+    rafId = requestAnimationFrame(stepA);
+  }
+
+  delayInput.addEventListener('input', updateReading);
+  playBtn.addEventListener('click', animate);
+
+  updateReading();
+
+  // Auto-play once when page loads, after a brief beat
+  if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setTimeout(animate, 600);
+  }
+})();
+</script>
+
+</body>
+</html>

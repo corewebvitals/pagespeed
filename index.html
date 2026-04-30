@@ -87,6 +87,19 @@
         letter-spacing: -0.01em;
       }
 
+      .tag {
+        display: inline-block;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        margin-bottom: 0.5rem;
+      }
+
       .item-desc {
         color: var(--muted);
         font-size: 0.95rem;
@@ -148,6 +161,16 @@
       <section>
         <h2>Experiments</h2>
         <ul class="list">
+          <li>
+            <span class="tag">Featured</span>
+            <a class="item-title" href="experiments/michotte-inp/">The 1946 experiment that defined the INP threshold →</a>
+            <p class="item-desc">Belgian psychologist Albert Michotte showed two shapes on a screen. Below 100ms delay people saw causality; above 200ms they saw unrelated events. Eighty years later those numbers are the Core Web Vitals INP buckets. Drag the slider — watch causality break at the threshold.</p>
+            <p class="meta">
+              <a href="experiments/michotte-inp/">Demo</a>
+              <span class="sep">·</span>
+              <a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/michotte-inp">Source</a>
+            </p>
+          </li>
           <li>
             <a class="item-title" href="experiments/lcp-image/">LCP Image →</a>
             <p class="item-desc">~25 variants of an LCP image: lazy, preload, fetchpriority, AVIF/WebP, picture, video poster. Each variant records its average LCP.</p>
