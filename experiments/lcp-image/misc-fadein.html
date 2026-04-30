@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap Demo</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <script src="js/jquery.js" defer></script>
+    <script src="js/bootstrap.js" defer></script>
+    <script src="js/test.js" defer></script>
+       <style>
+      .fadein {
+        animation: fadeIn 2s forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">LCP Test</a>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="display-4">Image fade-in</h1>
+      <p class="lead">The test is at <span id="progress">..</span></p>
+      <hr class="my-4" />
+      <img src="img/lcp-1296.webp" decoding="async" class="animated fadein img-fluid my-4" alt="Hero" />
+    </div>
+
+    <footer class="footer fixed-bottom bg-primary text-white">
+      <div class="container py-2">LCP timing: <span id="lcptiming">n.a.</span></div>
+    </footer>
+  </body>
+</html>
