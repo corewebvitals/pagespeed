@@ -643,10 +643,6 @@ Research is reasonably consistent in concluding that delays in visual feedback o
     boxB.setAttribute('x', BOX_B_START);
   }
 
-  function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
-
   function animate() {
     if (animating) return;
     var ms = parseInt(delayInput.value, 10);
@@ -658,8 +654,7 @@ Research is reasonably consistent in concluding that delays in visual feedback o
 
     function stepA(now) {
       var t = Math.min(1, (now - startA) / A_DURATION);
-      var eased = easeInOutCubic(t);
-      var x = BOX_A_START + (BOX_A_END - BOX_A_START) * eased;
+      var x = BOX_A_START + (BOX_A_END - BOX_A_START) * t;
       boxA.setAttribute('x', x.toFixed(2));
       if (t < 1) {
         rafId = requestAnimationFrame(stepA);
@@ -672,8 +667,7 @@ Research is reasonably consistent in concluding that delays in visual feedback o
       var startTime = performance.now();
       function stepB(now) {
         var t = Math.min(1, (now - startTime) / B_DURATION);
-        var eased = easeInOutCubic(t);
-        var x = BOX_B_START + (BOX_B_END - BOX_B_START) * eased;
+        var x = BOX_B_START + (BOX_B_END - BOX_B_START) * t;
         boxB.setAttribute('x', x.toFixed(2));
         if (t < 1) {
           rafId = requestAnimationFrame(stepB);
