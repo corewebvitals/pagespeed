@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Does a same-origin fetch reuse the connection your page arrived on? Run four fetch strategies in your own browser and see which ones pay for a new TCP+TLS handshake.">
+<title>Try It: Credentials And Connections</title>
+<style>
+  :root{--bg:#f4f6f8;--card:#fff;--sunk:#eef1f5;--ink:#10151c;--ink2:#48535f;--muted:#6b7684;
+        --line:#dde3ea;--line2:#c6d0da;--cold:#d2740f;--warm:#128063;--tls:#6f52c9;--wait:#4b6b8a}
+  @media (prefers-color-scheme:dark){:root{--bg:#0c1116;--card:#141b22;--sunk:#1b232c;--ink:#e8eef4;
+        --ink2:#c2ccd8;--muted:#8895a5;--line:#232d38;--line2:#37424f;--cold:#f0972f;--warm:#3ec79b;
+        --tls:#a48df0;--wait:#8fb0cf}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .w{max-width:50rem;margin:0 auto;padding:2.25rem 1.15rem 4rem}
+  h1{font-size:1.6rem;letter-spacing:-.025em;margin:0 0 .5rem}
+  .sub{color:var(--ink2);margin:0 0 1.5rem}
+  .mono,code{font-family:ui-monospace,Menlo,Consolas,monospace}
+  code{background:var(--sunk);border:1px solid var(--line);border-radius:3px;padding:.05em .3em;font-size:.85em}
+
+  .rows{display:flex;flex-direction:column;gap:.5rem}
+  .row{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.8rem .9rem;
+       display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.9rem}
+  .name{font-weight:600;font-size:.9375rem}
+  .code{color:var(--muted);font-size:.75rem;margin-top:.15rem;
+        font-family:ui-monospace,Menlo,monospace}
+  button{font:600 13px/1 inherit;padding:.6rem .8rem;border-radius:6px;border:1px solid var(--line2);
+         background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap}
+  button.go{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  button:disabled{opacity:.45;cursor:default}
+  :focus-visible{outline:2px solid var(--cold);outline-offset:2px}
+  .res{text-align:right;white-space:nowrap}
+  .t{font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .badge{display:inline-block;font-size:.6875rem;font-weight:700;letter-spacing:.03em;
+         padding:.1rem .4rem;border-radius:3px;border:1px solid;margin-top:.2rem}
+  .b-cold{color:var(--cold);border-color:var(--cold)}
+  .b-warm{color:var(--warm);border-color:var(--warm)}
+  .track{grid-column:1/-1;height:18px;background:var(--sunk);border-radius:4px;display:flex;overflow:hidden}
+  .track i{height:100%}
+  .k-tls{background:var(--tls)} .k-wait{background:var(--wait)} .k-paint{background:var(--warm)}
+  .brk{grid-column:1/-1;font-size:.7rem;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+
+  .stage{margin-top:1.25rem;background:var(--card);border:1px dashed var(--line2);border-radius:8px;
+         min-height:170px;display:flex;align-items:center;justify-content:center;padding:1.1rem;
+         color:var(--muted);font-size:.8125rem}
+  .lcp{width:100%;padding:2.2rem 1.4rem;border-radius:6px;color:#fff;
+       background:linear-gradient(135deg,#1c3f5e,#3d6d94)}
+  .lcp h2{margin:0;font-size:1.8rem;line-height:1.1;letter-spacing:-.02em}
+
+  .note{margin-top:1.5rem;font-size:.8125rem;color:var(--ink2);border-left:2px solid var(--line2);
+        padding-left:.9rem;display:flex;flex-direction:column;gap:.6rem}
+  .note b{color:var(--ink)}
+  .bar-top{display:flex;justify-content:space-between;align-items:baseline;margin:1.5rem 0 .5rem}
+  .bar-top h3{margin:0;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+</style>
+
+</head>
+<body>
+
+<div class="w">
+  <h1>Try it: does your fetch reuse the connection?</h1>
+  <p class="sub">
+    The blue hero is the LCP element. It is not in this HTML — it arrives over AJAX. Run each option and
+    watch what the request has to do before it can paint. Everything is measured in your own browser.
+  </p>
+
+  <div class="rows" id="rows"></div>
+
+  <div class="bar-top">
+    <h3>The LCP element</h3>
+    <button id="reset">Clear</button>
+  </div>
+  <div class="stage" id="stage">Nothing painted yet — run an option.</div>
+
+  <div class="note">
+    <p><b>COLD means the request had to open its own socket</b> and pay for a TCP + TLS handshake.
+    WARM means it reused a connection that was already open.</p>
+    <p><b>You get one COLD reading per pool, per browser session.</b> Once a socket exists it gets reused,
+    so a second run of the same option will read WARM and look fast. To test cold again, reopen this page
+    in a private window.</p>
+    <p><b>Run option 4 last.</b> It fetches with credentials, which reuses the connection this page is
+    already on — so it can never be cold, and running it first changes nothing for the others.</p>
+  </div>
+
+  <div class="note" style="border-left-color:var(--cold)">
+    <p><b>Why this page can only show you one cold reading.</b> GitHub Pages serves everything from a
+    single origin on port 443. Chrome keys its socket pools on (scheme, host, port), so once a socket
+    exists here it gets reused and every later run reads WARM. There is no way for a static host to
+    hand you a fresh connection on demand.</p>
+    <p><b>The full experiment runs locally.</b> Four <em>real page loads</em>, each served on a port that
+    has never been used before, so every load starts cold and the four variants are directly comparable.
+    It lives in <a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/connection-credentials/lab"><code>lab/</code></a>
+    — <code>./start.sh</code>, then open the runner it prints.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var OPTS = [
+    { id:1, name:"Fetch without credentials",
+      code:'fetch(url, { credentials: "omit" })', creds:"omit", hint:null },
+    { id:2, name:"Preconnect crossorigin, then fetch without credentials",
+      code:'<link rel="preconnect" crossorigin> + credentials: "omit"', creds:"omit", hint:"preconnect" },
+    { id:3, name:"Preload the AJAX, then fetch without credentials",
+      code:'<link rel="preload" as="fetch" crossorigin> + credentials: "omit"', creds:"omit", hint:"preload" },
+    { id:4, name:"Fetch with credentials",
+      code:'fetch(url, { credentials: "same-origin" })', creds:"same-origin", hint:null }
+  ];
+
+  var results = {};
+  var rowsEl = document.getElementById("rows");
+  var stage  = document.getElementById("stage");
+
+  function n(t,c,h){var e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;}
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+  function draw(){
+    rowsEl.textContent="";
+    var max=1;
+    OPTS.forEach(function(o){ var r=results[o.id]; if(r&&r.total>max) max=r.total; });
+
+    OPTS.forEach(function(o){
+      var r=results[o.id];
+      var row=n("div","row");
+
+      var b=n("button","go",r?"Re-run":"Run");
+      b.addEventListener("click",function(){ go(o,b); });
+      row.appendChild(b);
+
+      var mid=n("div");
+      mid.appendChild(n("div","name",esc(o.name)));
+      mid.appendChild(n("div","code",esc(o.code)));
+      row.appendChild(mid);
+
+      var right=n("div","res");
+      if(r){
+        right.appendChild(n("div","t",Math.round(r.total)+" ms"));
+        right.appendChild(n("span","badge "+(r.cold?"b-cold":"b-warm"),r.cold?"COLD":"WARM"));
+      } else right.appendChild(n("div","t","—"));
+      row.appendChild(right);
+
+      if(r){
+        var tr=n("div","track");
+        [["k-tls",r.setup],["k-wait",r.wait],["k-paint",r.paint]].forEach(function(p){
+          if(p[1]>0){ var i=n("i",p[0]); i.style.width=(p[1]/max*100)+"%"; tr.appendChild(i); }
+        });
+        row.appendChild(tr);
+        row.appendChild(n("div","brk",
+          "connection setup "+Math.round(r.setup)+" ms &middot; response "+Math.round(r.wait)+
+          " ms &middot; paint "+Math.round(r.paint)+" ms &middot; protocol "+r.proto));
+      }
+      rowsEl.appendChild(row);
+    });
+  }
+
+  function frame(){ return new Promise(function(res){
+    requestAnimationFrame(function(){ requestAnimationFrame(res); }); }); }
+
+  function addHint(kind,url){
+    var l=document.createElement("link");
+    if(kind==="preconnect"){ l.rel="preconnect"; l.href=location.origin; }
+    else { l.rel="preload"; l.as="fetch"; l.href=url; }
+    l.crossOrigin="anonymous";
+    document.head.appendChild(l);
+    return new Promise(function(r){ setTimeout(r,300); });   // give the hint a head start
+  }
+
+  async function go(o,btn){
+    btn.disabled=true;
+    stage.textContent="Loading…"; stage.style.borderStyle="dashed";
+    await frame();
+
+    var id="x"+Math.random().toString(36).slice(2,9);
+    var url=location.pathname+"?"+id;
+    var t0=performance.now();
+
+    if(o.hint) await addHint(o.hint,url);
+
+    var w0=performance.now();
+    try { await fetch(url,{credentials:o.creds,cache:"no-store"}); }
+    catch(e){
+      stage.textContent="Fetch blocked here — this page has to be served over http(s).";
+      btn.disabled=false; return;
+    }
+    var wall=performance.now()-w0;
+
+    var e=performance.getEntriesByType("resource").filter(function(x){
+      return x.name.indexOf(id)!==-1; }).pop();
+    var setup=0, proto="—";
+    if(e){ setup=e.connectEnd-e.connectStart; proto=e.nextHopProtocol||"—"; }
+
+    var hero=n("div","lcp"); hero.appendChild(n("h2",null,"This block is the LCP element"));
+    stage.textContent=""; stage.style.borderStyle="none"; stage.appendChild(hero);
+    var p0=performance.now(); await frame(); var paint=performance.now()-p0;
+
+    results[o.id]={ total:performance.now()-t0, setup:setup,
+                    wait:Math.max(0,wall-setup), paint:paint,
+                    cold:setup>0, proto:proto };
+    draw();
+    btn.disabled=false;
+  }
+
+  document.getElementById("reset").addEventListener("click",function(){
+    results={}; stage.style.borderStyle="dashed";
+    stage.textContent="Nothing painted yet — run an option."; draw();
+  });
+
+  draw();
+})();
+</script>
+
+</body>
+</html>

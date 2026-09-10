@@ -172,6 +172,15 @@
             </p>
           </li>
           <li>
+            <a class="item-title" href="experiments/connection-credentials/">The fetch that pays for its own handshake →</a>
+            <p class="item-desc">A same-origin <code>fetch()</code> with <code>credentials:"omit"</code> is put in Chromium's privacy-mode socket pool, so it cannot reuse the connection your page arrived on. It opens a second socket and pays a full TCP+TLS handshake — and if it carries your LCP element, that is on the critical path.</p>
+            <p class="meta">
+              <a href="experiments/connection-credentials/">Demo</a>
+              <span class="sep">·</span>
+              <a href="https://github.com/corewebvitals/pagespeed/tree/main/experiments/connection-credentials">Source</a>
+            </p>
+          </li>
+          <li>
             <a class="item-title" href="experiments/lcp-image/">LCP Image →</a>
             <p class="item-desc">~25 variants of an LCP image: lazy, preload, fetchpriority, AVIF/WebP, picture, video poster. Each variant records its average LCP.</p>
             <p class="meta">

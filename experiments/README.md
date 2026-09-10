@@ -8,6 +8,7 @@ Interactive Core Web Vitals demos. Each subfolder is a self-contained experiment
 | [`lcp-image`](lcp-image) | [▶](https://corewebvitals.github.io/pagespeed/experiments/lcp-image/) | LCP — image loading techniques |
 | [`view-transition`](view-transition) | [▶](https://corewebvitals.github.io/pagespeed/experiments/view-transition/) | LCP — view transitions impact |
 | [`datalayer-schedule-after-paint`](datalayer-schedule-after-paint) | [▶](https://corewebvitals.github.io/pagespeed/experiments/datalayer-schedule-after-paint/demo.html) | INP — defer `dataLayer.push` until after paint |
+| [`connection-credentials`](connection-credentials) | [▶](https://corewebvitals.github.io/pagespeed/experiments/connection-credentials/) | LCP — `credentials:"omit"` forces a second TCP+TLS connection to your own origin |
 
 ## Adding a new experiment
 
