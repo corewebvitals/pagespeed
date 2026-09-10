@@ -61,13 +61,13 @@ before**, so no socket can survive from the previous load.
     cd lab
     ./start.sh
 
-Then open the runner in a Chrome that tolerates the self-signed cert:
+That is the whole thing — it starts the lab and opens the runner for you in a throwaway browser
+profile (`/tmp/cx-demo`; your everyday Chrome is untouched). The runner gives you a link per variant
+on a fresh port, or chains all four automatically. `./stop.sh` shuts it down.
 
-    google-chrome --user-data-dir=/tmp/cx-demo --ignore-certificate-errors \
-      https://localhost:8902/runner
-
-The runner gives you a link per variant on a fresh port, or chains all four automatically.
-`./stop.sh` shuts it down.
+The lab serves HTTPS with a self-signed cert, so the browser is started with
+`--ignore-certificate-errors`. That is not incidental: TLS is the cost being measured. Over plain
+HTTP on loopback a new connection costs ~0 ms and there is nothing to see.
 
 Headless batch runs:
 
